@@ -1,0 +1,25 @@
+1>  Task 1: Create and Inspect a Docker Volume
+    Task 2: Mount a Volume to a Container
+    Task 3: Add Data to the Volume
+    Task 4: Sharing Volumes Between Containers
+
+2> Task 1: Pull a Docker Image of nginx
+   Task 2: Run a Container from the Pulled Image and expose it on port 8080
+   Task 3: Pull and Run Another Application of httpd and expose it on 9090
+   Task 4: Interact with a Running Container by login into it 
+   Task 5: Stop and Remove Containers
+   Task 6: Remove Pulled Images
+3> Docker Image Management and Pushing to a Private Repository
+   Task 1: Pull a Base Image and Run a Container of nginx
+   task 2: Modify the Image and Create a Custom Image
+   Task 3: Tag the Image for a Private Repository
+   Task 4: Push the Image to a Private Repository
+   Task 5: Pull the Image from the Repository and Run a Container
+
+4> docker networking 
+   Task 1: Inspect Default Docker Networks
+   Task 2: Run Containers in the Default Bridge Network
+   Task 3: Create a Custom Network and Connect Containers
+   Task 4: Connecting Containers Across Different Networks
+   Task 5: Disconnect and Remove Networks
+

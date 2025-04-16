@@ -1,0 +1,17 @@
+pushing  new image to repository 
+1> create a new container
+2> store your own website  or data in it 
+3> save that container
+-- docker save <container_id> -o image.tar 
+
+
+-- docker commit <container_id> <new_image_name>
+
+4> Name the image
+
+-- docker tag <iamge_id><image_name>
+-- registryname/username/imagename:tag
+e.g docker.io/rachanayelmame8/exampleimage:v1
+
+5> push the image 
+-- docker login <registry>

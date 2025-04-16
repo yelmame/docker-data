@@ -1,0 +1,77 @@
+1: ans docker volume 
+
+ Task 1: Create and Inspect a Docker Volume
+Create a new Docker volume named myvolume using the command:
+sh
+Copy
+Edit
+docker volume create myvolume
+Verify the created volume:
+sh
+Copy
+Edit
+docker volume ls
+Inspect the volume to check its details:
+sh
+Copy
+Edit
+docker volume inspect myvolume
+Task 2: Mount a Volume to a Container
+Run an nginx container and mount the myvolume volume to the /usr/share/nginx/html directory inside the container:
+sh
+Copy
+Edit
+docker run -d --name mynginx -v myvolume:/usr/share/nginx/html -p 8080:80 nginx
+Verify that the container is running:
+sh
+Copy
+Edit
+docker ps
+Access http://localhost:8080 in your browser to confirm that Nginx is running.
+Task 3: Add Data to the Volume
+Start a temporary container and write data to the volume:
+sh
+Copy
+Edit
+docker run --rm -it -v myvolume:/data alpine sh
+Inside the container, create a file in the /data directory:
+sh
+Copy
+Edit
+echo "Hello, Docker Volume!" > /data/index.html
+Exit the container by typing:
+sh
+Copy
+Edit
+exit
+Restart the mynginx container:
+sh
+Copy
+Edit
+docker restart mynginx
+Refresh http://localhost:8080 in your browser. You should see the text "Hello, Docker Volume!" displayed.
+Task 4: Sharing Volumes Between Containers
+Run another container and mount the same volume:
+sh
+Copy
+Edit
+docker run --rm -it -v myvolume:/data alpine sh
+Check if the index.html file is available:
+cat /data/index.html
+You should see the content Hello, Docker Volume!, proving data persistence.
+Task 5: Clean Up
+Stop and remove the mynginx container:
+docker stop mynginx && docker rm mynginx
+Remove the created volume:
+sh
+Copy
+Edit
+docker volume rm myvolume
+Verify that the volume is deleted:
+sh
+Copy
+Edit
+docker volume ls
+
+*********************
+2 ans 

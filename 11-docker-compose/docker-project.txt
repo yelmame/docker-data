@@ -1,0 +1,133 @@
+Docker Compose project with MySQL, Redis, and a Node.js app:
+
+
+project structure 
+
+docker-compose.yml
+app/
+  ├── Dockerfile
+  ├── server.js
+
+
+1: docker-compose.yml
+
+version: '3.8'
+
+services:
+  app:
+    build: ./app
+    container_name: node-app
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      DB_HOST: mysql
+      DB_USER: myuser
+      DB_PASSWORD: mypassword
+      DB_NAME: mydatabase
+      REDIS_HOST: redis
+    networks:
+      - app_network
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+volumes:
+  mysql_data:
+
+networks:
+  app_network:
+
+************************************************
+
+2:   app/Dockerfile (Node.js App)
+
+FROM node:18
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY . .
+CMD ["node", "server.js"]
+
+
+****************************************************
+
+3: app/server.js (Simple Express App)
+
+const express = require("express");
+const mysql = require("mysql");
+const redis = require("redis");
+
+const app = express();
+const port = 3000;
+
+// Connect to MySQL
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
+
+db.connect((err) => {
+  if (err) {
+    console.error("MySQL Connection Failed:", err);
+  } else {
+    console.log("Connected to MySQL");
+  }
+});
+
+// Connect to Redis
+const redisClient = redis.createClient({
+  url: `redis://${process.env.REDIS_HOST}:6379`,
+});
+
+redisClient.on("connect", () => {
+  console.log("Connected to Redis");
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello from Dockerized Node.js App!");
+});
+
+app.listen(port, () => {
+  console.log(`App running on port ${port}`);
+});
+
+
+
+****************************************************
+
+
+How to Run the Project
+Save these files in a folder
+
+```bash 
+docker-compose up -d --build
+Open http://localhost:3000 in your browser.
+```
